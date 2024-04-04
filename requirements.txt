@@ -1,0 +1,4 @@
+streamlit
+json
+llama-index
+chroma-db
