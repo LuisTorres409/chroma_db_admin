@@ -185,7 +185,7 @@ if 'collections' not in st.session_state.keys():
     st.session_state.collections = {collection.name : collection for collection in collections}
 
 if 'collections_docs' not in st.session_state.keys():
-    st.session_state.collections_docs = {}#if 'selected_docs' not in st.session_state.keys():    #st.session_state.selected_docs = []
+    st.session_state.collections_docs = {}
 
 with st.sidebar:
 
@@ -248,10 +248,6 @@ with col1:
 
     documents_collection_df['filename'] = documents_collection_df['metadatas'].apply(lambda x: extrair_filename_v2(x))
     documents_collection_df = documents_collection_df.rename(columns={'documents':'Conteúdo','embeddings':'Embeddings','filename':'Nome do Arquivo'})
-    #st.write(st.session_state.selected_docs)
-    #if st.session_state.selected_docs != []:
-        #documents_collection_df = documents_collection_df[documents_collection_df['Nome do Arquivo'].isin(st.session_state.selected_docs)]
-    #collection_df = st.dataframe(documents_collection_df[['Nome do Arquivo','Embeddings','Conteúdo']])
     edited_df = st.data_editor(documents_collection_df[['Nome do Arquivo','Embeddings','Conteúdo']], num_rows="dynamic")
     vetores_reduzidos = reduce_dimensions(documents_collection_df['Embeddings'].tolist())
     df_vectors = pd.DataFrame(vetores_reduzidos, columns=[0,1,2])
@@ -267,13 +263,6 @@ with col2:
         lista_arquivos = edited_df['Nome do Arquivo'].unique()
         st.metric('Número de Documentos',len(lista_arquivos))
         st.session_state.collections_docs[collection_name] = lista_arquivos
-
-#with st.sidebar:
-    #st.header('Selecione documentos do banco de dados')
-    #selected_docs = st.multiselect('Selecione os documentos', st.session_state.collections_docs[collection_name])
-    #st.session_state.selected_docs = selected_docs
-    #st.write(selected_docs)
-
 col_graph_left, col_graph_right = st.columns(2)
 
 with col_graph_left:
