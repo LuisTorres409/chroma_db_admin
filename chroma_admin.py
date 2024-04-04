@@ -15,7 +15,6 @@ from langchain_openai import OpenAIEmbeddings
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter,RecursiveCharacterTextSplitter
 from llama_index.core import Document, Settings
-from mpl_toolkits.mplot3d import Axes3D
 import json
 import shutil
 import plotly.express as px
@@ -309,28 +308,8 @@ with col_graph_right:
 _,col_esfera_title,_ = st.columns(3)
 
 with col_esfera_title:
-    st.title('**Esfera de raio médio**')
+    st.title('**Esferas de raio médio**')
 
-
-col_latex , col_radius_dataframe = st.columns(2)
-
-with col_latex:
-    st.markdown(r'''
-A fórmula para o raio médio é dada pela média da distância euclidiana de cada vetor ao centroide da coleção,
-dessa forma, seja $C$ o centroide da coleção , e $V_i$ o vetor $i$ da coleção,o centroide é dado por:
-$$
-C = \frac{\sum_{i=1}^{n} V_i}{n}
-$$
-Dessa forma, podemos calcular o raio médio da coleção como:
-$$
-R_{medio}=\frac{\sum_{i=1}^{n} ||C-V_i||}{n}
-$$
-Dessa forma, quanto menor o raio médio, mais denso é o cluster semântico dos vetores, mostrando que os fragmentos dos documentos são mais similares entre si, ou
-que a separação de embedding está bem feita.
-''')
-
-with col_radius_dataframe:
-    st.dataframe(df_raios)
 
 fig = px.scatter_3d(df_vectors_mean, x=0, y=1, z=2, opacity=0.5)
 
@@ -344,8 +323,11 @@ for i in range(len(df_vectors_mean)):
 fig.update_traces(marker=dict(size=2))
 fig.update_layout(scene=dict(aspectmode="cube"))
 
-_ , col_sphere_graph , _ = st.columns(3)
+col_sphere_graph , col_radius_dataframe = st.columns(2)
 
 with col_sphere_graph:
     st.plotly_chart(fig)
+
+with col_radius_dataframe:
+    st.dataframe(df_raios)
 
